@@ -17,7 +17,7 @@ const authMiddleware = async (req, res, next) => {
                 error: 'Unauthorized' 
             }).end()
         } else {
-            req.username = user.username
+            req.id_user = user.id_user
             next()
         }
     }

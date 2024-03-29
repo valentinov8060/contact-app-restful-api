@@ -3,11 +3,16 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { prismaClient } from "../app/database.js";
 import { validation } from "../validation/validation.js"
-import { userRegisterValidationSchema, userLoginValidationSchema, getUserValidationSchema } from "../validation/user-validation.js"
+import { 
+    registerUserValidationSchema, 
+    loginUserValidationSchema, 
+    getUserValidationSchema,
+    updateUserValidationSchema
+} from "../validation/user-validation.js"
 import { ResponseError } from "../error/respon-error.js"
 
-const userRegister = async (request) => {
-    const user = validation(userRegisterValidationSchema, request)
+const userRegister = async (reqBody) => {
+    const user = validation(registerUserValidationSchema, reqBody)
 
     const checkPlagiarismUsername = await prismaClient.user.count({
         where: {
@@ -30,8 +35,8 @@ const userRegister = async (request) => {
     })
 }
 
-const userLogin = async (request) => {
-    const user = validation(userLoginValidationSchema, request)
+const userLogin = async (reqBody) => {
+    const user = validation(loginUserValidationSchema, reqBody)
 
     const getIdAndPasswordByUsername = await prismaClient.user.findFirst({
         where: {
@@ -67,12 +72,12 @@ const userLogin = async (request) => {
     })
 }
 
-const getUser = async (usernameFromHeader) => {
-    const username = validation(getUserValidationSchema, usernameFromHeader)
+const userGet = async (idFromHeader) => {
+    const idUser = validation(getUserValidationSchema, idFromHeader)
 
-    const getNameAndIdByUsername = await prismaClient.user.findFirst({
+    const getUsernameAndNameById = await prismaClient.user.findFirst({
         where: {
-            username: username
+            id_user: idUser
         },
         select: {
             id_user: true,
@@ -81,15 +86,63 @@ const getUser = async (usernameFromHeader) => {
         }
     })
 
-    if (!getNameAndIdByUsername) {
+    if (!getUsernameAndNameById) {
         throw new ResponseError(404, "User not found")
     }
 
-    return getNameAndIdByUsername
+    return getUsernameAndNameById
+}
+
+const userUpdate = async (idFromHeader, reqBody) => {
+    const user = validation(updateUserValidationSchema, reqBody)
+
+    const checkUser = await prismaClient.user.findFirst({
+        where: {
+            id_user: idFromHeader
+        }
+    })
+
+    if (!checkUser) {
+        throw new ResponseError(404, "User not found")
+    }
+
+    const data = {}
+
+    if (user.name) {
+        data.name = user.name
+    }
+    if(user.password) {
+        data.password = await bcrypt.hash(user.password, 10)
+    }
+
+    return prismaClient.user.update({
+        where: {
+            id_user: idFromHeader
+        },
+        data: data,
+        select: {
+            id_user: true,
+            username: true,
+            name: true
+        }
+    })
+}
+
+const userLogout = async (idFromHeader) => {
+    return prismaClient.user.update({
+        where: {
+            id_user: idFromHeader
+        },
+        data: {
+            token: null
+        }
+    })
 }
 
 export {
     userRegister,
     userLogin,
-    getUser
+    userGet,
+    userUpdate,
+    userLogout
 }

@@ -1,5 +1,10 @@
-import {userRegister, userLogin, getUser} from "../service/user-service.js"
-// import { authMiddleware } from "../middleware/auth-middleware.js"
+import {
+    userRegister, 
+    userLogin, 
+    userGet,
+    userUpdate,
+    userLogout
+} from "../service/user-service.js"
 
 const register = async (req, res, next) => {
     try {
@@ -25,8 +30,8 @@ const login = async (req, res, next) => {
 
 const get = async (req, res, next) => {
     try {
-        const usernameFromHeader = req.username
-        const idUsernameAndName = await getUser(usernameFromHeader)
+        const idFromHeader = req.id_user
+        const idUsernameAndName = await userGet(idFromHeader)
         res.status(200).json({
             data: idUsernameAndName
         })
@@ -36,8 +41,34 @@ const get = async (req, res, next) => {
     }
 }
 
+const update = async (req, res, next) => {
+    try {
+        const idFromHeader = req.id_user
+        const idUsernameAndName = await userUpdate(idFromHeader, req.body)
+        res.status(200).json({
+            data: idUsernameAndName
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const logout = async (req, res, next) => {
+    try {
+        const idFromHeader = req.id_user
+        const idUsernameAndName = await userLogout(idFromHeader)
+        res.status(200).json({
+            data: "OK"
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export {
     register,
     login,
-    get
+    get,
+    update,
+    logout
 }

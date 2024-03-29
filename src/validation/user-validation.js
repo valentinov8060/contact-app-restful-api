@@ -1,20 +1,26 @@
 import Joi from "joi";
 
-const userRegisterValidationSchema = Joi.object({
+const registerUserValidationSchema = Joi.object({
     username: Joi.string().max(100).required(),
     password: Joi.string().max(100).required(),
     name: Joi.string().max(100).required()
 })
 
-const userLoginValidationSchema = Joi.object({
+const loginUserValidationSchema = Joi.object({
     username: Joi.string().max(100).required(),
     password: Joi.string().max(100).required()
 })
 
 const getUserValidationSchema = Joi.string().max(100).required()
 
+const updateUserValidationSchema = Joi.object({
+    name: Joi.string().max(100).optional(),
+    password: Joi.string().max(100).optional()
+})
+
 export {
-    userRegisterValidationSchema,
-    userLoginValidationSchema,
-    getUserValidationSchema
+    registerUserValidationSchema,
+    loginUserValidationSchema,
+    getUserValidationSchema,
+    updateUserValidationSchema
 }

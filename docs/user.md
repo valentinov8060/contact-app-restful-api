@@ -2,7 +2,7 @@
 
 ## 1. Register User API
 
-Endpoint :  POST /api/users/register
+Endpoint :  POST /api/user/register
 
 Request Body :
 
@@ -35,7 +35,7 @@ Response Body Error :
 
 ## 2. Login User API
 
-Endpoint : POST /api/users/login
+Endpoint : POST /api/user/login
 
 Request Body :
 
@@ -51,7 +51,8 @@ Response Body Success :
 ```json
 {
     "data" : {
-        "token" : "unique-token"
+        "token" : "unique-token",
+        "user_id": "unique-id"
     }
 }
 ```
@@ -66,8 +67,7 @@ Response Body Error :
 
 ## 3. Update User API
 
-Endpoint : PATCH /api/users/current
-
+Endpoint : PATCH /api/user/update
 Headers :
 - Authorization : token 
 
@@ -101,7 +101,7 @@ Response Body Error :
 
 ## 4. Get User API
 
-Endpoint : GET /api/users/current
+Endpoint : GET /api/user/get
 
 Headers :
 - Authorization : token
@@ -111,6 +111,7 @@ Response Body Success:
 ```json
 {
     "data" : {
+        "user_id": "unique-id",
         "username" : "valentinov8060",
         "name" : "Valentinov"
     }
@@ -127,7 +128,7 @@ Response Body Error :
 
 ## 5. Logout User API
 
-Endpoint : DELETE /api/users/current
+Endpoint : DELETE /api/user/logout  
 
 Headers :
 - Authorization : token

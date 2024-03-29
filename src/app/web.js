@@ -1,6 +1,7 @@
 import express from 'express';
 
-import { router } from '../router/public-api.js';
+import { publicRouter } from '../router/public-api.js';
+import { privateRouter } from '../router/private-api.js';
 import { errorMiddleware } from '../middleware/error-middleware.js';
 
 const app = express();
@@ -9,7 +10,9 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
-app.use(router)
+app.use('/api/user', publicRouter)
+app.use('/api/user', privateRouter)
+
 app.use(errorMiddleware)
 
 export { 

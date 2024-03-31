@@ -23,7 +23,7 @@ Response Body Success :
 ```json
 {
     "data" : {
-        "user_id": "unique-id",
+        "id_user": "unique-id",
         "id_contact" : 1,
         "first_name" : "Bill",
         "last_name" : "Valentinov",
@@ -43,7 +43,7 @@ Response Body Error :
 
 ## 2. Update Contact API
 
-Endpoint : PUT /api/contact/update/:id_contacts
+Endpoint : PUT /api/contact/update/:id_contact
 
 Headers :
 - Authorization : token
@@ -64,6 +64,7 @@ Response Body Success :
 ```json
 {
     "data" : {
+        "id_user": "unique-id",
         "id_contact" : 1,
         "first_name" : "Bill",
         "last_name" : "Valentinov",
@@ -93,6 +94,7 @@ Response Body Success :
 ```json
 {
     "data" : {
+        "id_user": "unique-id",
         "id_contact" : 1,
         "first_name" : "Bill",
         "last_name" : "Valentinov",
@@ -162,7 +164,7 @@ Response Body Error :
 
 ## 5. Remove Contact API
 
-Endpoint : DELETE /api/contact/remove/:id_contacts
+Endpoint : DELETE /api/contact/remove/:id_contact
 
 Headers :
 - Authorization : token

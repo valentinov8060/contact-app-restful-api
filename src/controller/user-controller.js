@@ -19,9 +19,9 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
-        const tokenAndId = await userLogin(req.body)
+        const tokenAndIdUser = await userLogin(req.body)
         res.status(200).json({
-            data: tokenAndId
+            data: tokenAndIdUser
         })
     } catch (error) {
         next(error)
@@ -30,10 +30,9 @@ const login = async (req, res, next) => {
 
 const get = async (req, res, next) => {
     try {
-        const idFromHeader = req.id_user
-        const idUsernameAndName = await userGet(idFromHeader)
+        const idUserUsernameAndName = await userGet(req.id_user)
         res.status(200).json({
-            data: idUsernameAndName
+            data: idUserUsernameAndName
         })
 
     } catch (error) {
@@ -43,10 +42,9 @@ const get = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const idFromHeader = req.id_user
-        const idUsernameAndName = await userUpdate(idFromHeader, req.body)
+        const idUserUsernameAndName = await userUpdate(req.id_user, req.body)
         res.status(200).json({
-            data: idUsernameAndName
+            data: idUserUsernameAndName
         })
     } catch (error) {
         next(error)
@@ -55,8 +53,7 @@ const update = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
     try {
-        const idFromHeader = req.id_user
-        const idUsernameAndName = await userLogout(idFromHeader)
+        await userLogout(req.id_user)
         res.status(200).json({
             data: "OK"
         })
@@ -65,7 +62,7 @@ const logout = async (req, res, next) => {
     }
 }
 
-export {
+export default {
     register,
     login,
     get,

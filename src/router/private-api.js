@@ -1,7 +1,7 @@
 import express from 'express';
 
 // user API
-import {register, login, get, update, logout} from '../controller/user-controller.js';
+import userController from '../controller/user-controller.js';
 // contact API
 import contactController from '../controller/contact-controller.js';
 import {authMiddleware} from '../middleware/auth-middleware.js';
@@ -10,9 +10,9 @@ const privateRouter = new express.Router();
 
 privateRouter.use(authMiddleware);
 // user API
-privateRouter.get('/user/get', get);
-privateRouter.patch('/user/update', update);
-privateRouter.delete('/user/logout', logout);
+privateRouter.get('/user/get', userController.get);
+privateRouter.patch('/user/update', userController.update);
+privateRouter.delete('/user/logout', userController.logout);
 // contact API
 privateRouter.post('/contact/create', contactController.create);
 privateRouter.get('/contact/get/:id_contact', contactController.get);

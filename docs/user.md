@@ -51,8 +51,8 @@ Response Body Success :
 ```json
 {
     "data" : {
-        "token" : "unique-token",
-        "user_id": "unique-id"
+        "user_id": "unique-id",
+        "token" : "unique-token"
     }
 }
 ```
@@ -85,6 +85,7 @@ Response Body Success :
 ```json
 {
     "data" : {
+        "user_id": "unique-id",
         "username" : "valentinov8060",
         "name" : "Valentinov"
     }

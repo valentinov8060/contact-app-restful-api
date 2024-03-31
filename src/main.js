@@ -1,4 +1,4 @@
-import {app} from './app/web.js'
+import {app} from './app/app.js'
 import {logger} from './app/logging.js'
 
 app.listen(3000, () => {

@@ -8,7 +8,8 @@ import {
 
 const create = async (req, res, next) => {
     try {
-        const contact = await contactCreate(req.id_user, req.body)
+        const idUser = req.id_user
+        const contact = await contactCreate(idUser, req.body)
         res.status(201).json({
             data: contact 
         })
@@ -60,14 +61,14 @@ const remove = async (req, res, next) => {
 const search = async (req, res, next) => {
     try {
         const idUser = req.id_user
-        const queryParams = {
+        const queryParamsValues = {
             name: req.query.name,
             email: req.query.email,
             phone_number: req.query.phone_number,
             page: req.query.page,
             size: req.query.size
         }
-        const contact = await contactSearch(idUser, queryParams)
+        const contact = await contactSearch(idUser, queryParamsValues)
         res.status(200).json({
             data: contact
         })

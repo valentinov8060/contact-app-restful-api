@@ -11,16 +11,16 @@ const loginUserValidationSchema = Joi.object({
     password: Joi.string().max(100).required()
 })
 
-const getUserValidationSchema = Joi.string().max(100).required()
-
 const updateUserValidationSchema = Joi.object({
     name: Joi.string().max(100).optional(),
     password: Joi.string().max(100).optional()
 })
 
+const idUserValidationSchema = Joi.string().max(100).required()
+
 export {
     registerUserValidationSchema,
     loginUserValidationSchema,
-    getUserValidationSchema,
-    updateUserValidationSchema
+    updateUserValidationSchema,
+    idUserValidationSchema
 }

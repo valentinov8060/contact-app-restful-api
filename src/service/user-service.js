@@ -6,17 +6,17 @@ import { validation } from "../validation/validation.js"
 import { 
     registerUserValidationSchema, 
     loginUserValidationSchema, 
-    getUserValidationSchema,
-    updateUserValidationSchema
+    updateUserValidationSchema,
+    idUserValidationSchema
 } from "../validation/user-validation.js"
 import { ResponseError } from "../error/respon-error.js"
 
 const userRegister = async (reqBody) => {
-    const user = validation(registerUserValidationSchema, reqBody)
+    reqBody = validation(registerUserValidationSchema, reqBody)
 
     const checkPlagiarismUsername = await prismaClient.user.count({
         where: {
-            username: user.username
+            username: reqBody.username
         }
     })
 
@@ -24,10 +24,10 @@ const userRegister = async (reqBody) => {
         throw new ResponseError(400, "Username already exist")
     }
 
-    user.password = await bcrypt.hash(user.password, 10)
+    reqBody.password = await bcrypt.hash(reqBody.password, 10)
 
     return prismaClient.user.create({
-        data: user,
+        data: reqBody,
         select: {
             username: true,
             name: true
@@ -36,11 +36,11 @@ const userRegister = async (reqBody) => {
 }
 
 const userLogin = async (reqBody) => {
-    const user = validation(loginUserValidationSchema, reqBody)
+    reqBody = validation(loginUserValidationSchema, reqBody)
 
     const getIdAndPasswordByUsername = await prismaClient.user.findFirst({
         where: {
-            username: user.username
+            username: reqBody.username
         }, 
         select: {
             id_user: true,
@@ -51,7 +51,7 @@ const userLogin = async (reqBody) => {
         throw new ResponseError(401, "Username or password invalid")
     }
 
-    const checkPassword = await bcrypt.compare(user.password, getIdAndPasswordByUsername.password)
+    const checkPassword = await bcrypt.compare(reqBody.password, getIdAndPasswordByUsername.password)
     if (!checkPassword) {
         throw new ResponseError(401, "Username or password invalid")
     }
@@ -73,11 +73,11 @@ const userLogin = async (reqBody) => {
 }
 
 const userGet = async (idFromHeader) => {
-    const idUser = validation(getUserValidationSchema, idFromHeader)
+    idFromHeader = validation(idUserValidationSchema, idFromHeader)
 
     const getUsernameAndNameById = await prismaClient.user.findFirst({
         where: {
-            id_user: idUser
+            id_user: idFromHeader
         },
         select: {
             id_user: true,
@@ -94,7 +94,8 @@ const userGet = async (idFromHeader) => {
 }
 
 const userUpdate = async (idFromHeader, reqBody) => {
-    const user = validation(updateUserValidationSchema, reqBody)
+    idFromHeader = validation(idUserValidationSchema, idFromHeader)
+    reqBody = validation(updateUserValidationSchema, reqBody)
 
     const checkUser = await prismaClient.user.findFirst({
         where: {
@@ -108,18 +109,18 @@ const userUpdate = async (idFromHeader, reqBody) => {
 
     const data = {}
 
-    if (user.name) {
-        data.name = user.name
+    if (reqBody.name) {
+        data.name = reqBody.name
     }
-    if(user.password) {
-        data.password = await bcrypt.hash(user.password, 10)
+    if(reqBody.password) {
+        data.password = await bcrypt.hash(reqBody.password, 10)
     }
 
     return prismaClient.user.update({
         where: {
             id_user: idFromHeader
         },
-        data: data,
+        data,
         select: {
             id_user: true,
             username: true,
@@ -129,6 +130,8 @@ const userUpdate = async (idFromHeader, reqBody) => {
 }
 
 const userLogout = async (idFromHeader) => {
+    validation(idUserValidationSchema, idFromHeader)
+
     return prismaClient.user.update({
         where: {
             id_user: idFromHeader

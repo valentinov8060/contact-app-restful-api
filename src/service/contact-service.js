@@ -3,17 +3,20 @@ import { validation } from "../validation/validation.js"
 import { 
     createContactValidationSchema,
     updateContactValidationSchema,
-    searchContactValidationSchema
+    searchContactValidationSchema,
+    idUserValidationSchema,
+    idContactValidationSchema
 } from "../validation/contact-validation.js"
 import { ResponseError } from "../error/respon-error.js"
 
 const contactCreate = async (id_user, reqBody) => {
-    const contact = validation(createContactValidationSchema, reqBody)
+    validation(idUserValidationSchema, id_user)
+    reqBody = validation(createContactValidationSchema, reqBody)
 
-    contact.id_user = id_user
+    reqBody.id_user = id_user
 
     return prismaClient.contact.create({
-        data: contact,
+        data: reqBody,
         select: {
             id_user: true,
             id_contact: true,
@@ -26,12 +29,14 @@ const contactCreate = async (id_user, reqBody) => {
 }
 
 const contactGet = async (id_user, id_contact) => {
+    validation(idUserValidationSchema, id_user)
+    validation(idContactValidationSchema, id_contact)
 
-    const id_contactInt = Number(id_contact)
+    id_contact = Number(id_contact)
     const result = await prismaClient.contact.findFirst({
         where: {
             id_user,
-            id_contact: id_contactInt
+            id_contact
         },
         select: {
             id_user: true,
@@ -51,9 +56,11 @@ const contactGet = async (id_user, id_contact) => {
 }
 
 const contactUpdate = async (id_user, id_contact, reqBody) => {
-
-    reqBody.id_contact = Number(id_contact)
+    validation(idUserValidationSchema, id_user)
+    validation(idContactValidationSchema, id_contact)
     const contact = validation(updateContactValidationSchema, reqBody)
+
+    contact.id_contact = Number(id_contact)
 
     const checkData = await prismaClient.contact.findUnique({
         where: {
@@ -85,6 +92,9 @@ const contactUpdate = async (id_user, id_contact, reqBody) => {
 }
 
 const contactRemove = async (id_user, id_contact) => {
+    validation(idUserValidationSchema, id_user)
+    validation(idContactValidationSchema, id_contact)
+
     const checkData = await prismaClient.contact.findUnique({
         where: {
             id_user,
@@ -104,38 +114,38 @@ const contactRemove = async (id_user, id_contact) => {
     })
 }
 
-const contactSearch = async (id_user, queryParams) => {
-
-    queryParams = validation(searchContactValidationSchema, queryParams)
+const contactSearch = async (id_user, queryParamsValues) => {
+    validation(idUserValidationSchema, id_user)
+    queryParamsValues = validation(searchContactValidationSchema, queryParamsValues)
 
     const searchContact = []
-    if (queryParams.name) {
+    if (queryParamsValues.name) {
         searchContact.push({
             OR: [
                 {
                     first_name: {
-                        contains: queryParams.name
+                        contains: queryParamsValues.name
                     }
                 },
                 {
                     last_name: {
-                        contains: queryParams.name
+                        contains: queryParamsValues.name
                     }
                 }
             ]
         })
     }
-    if (queryParams.email) {
+    if (queryParamsValues.email) {
         searchContact.push({
             email: {
-                contains: queryParams.email
+                contains: queryParamsValues.email
             }
         })
     }
-    if (queryParams.phone_number) {
+    if (queryParamsValues.phone_number) {
         searchContact.push({
             phone_number: {
-                contains: queryParams.phone_number
+                contains: queryParamsValues.phone_number
             }
         })
     }
@@ -145,8 +155,8 @@ const contactSearch = async (id_user, queryParams) => {
             id_user,
             AND: searchContact
         },
-        take: queryParams.size,
-        skip: (queryParams.page - 1) * queryParams.size,
+        take: queryParamsValues.size,
+        skip: (queryParamsValues.page - 1) * queryParamsValues.size,
     })
 
     const total = await prismaClient.contact.count({
@@ -159,8 +169,8 @@ const contactSearch = async (id_user, queryParams) => {
     return {
         data: contacts,
         paging : {
-            page : queryParams.page,
-            total_page : Math.ceil(total / queryParams.size),
+            page : queryParamsValues.page,
+            total_page : Math.ceil(total / queryParamsValues.size),
             total_item : total
         }
     }

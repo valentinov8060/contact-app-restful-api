@@ -2,7 +2,7 @@
 
 ## 1. Create Contact API
 
-Endpoint : POST /api/contacts
+Endpoint : POST /api/contact/create
 
 Headers : 
 - Authorization : token
@@ -14,7 +14,7 @@ Request Body :
     "first_name" : "Bill",
     "last_name" : "Valentinov",
     "email" : "bill80@gmail.com",
-    "phone" : "123456789098"
+    "phone_number" : "123456789098"
 }
 ```
 
@@ -23,11 +23,12 @@ Response Body Success :
 ```json
 {
     "data" : {
-        "id" : 1,
+        "user_id": "unique-id",
+        "id_contact" : 1,
         "first_name" : "Bill",
         "last_name" : "Valentinov",
         "email" : "bill80@gmail.com",
-        "phone" : "123456789098"
+        "phone_number" : "123456789098"
     }
 }
 ```
@@ -42,7 +43,7 @@ Response Body Error :
 
 ## 2. Update Contact API
 
-Endpoint : PUT /api/contacts/:idContacts
+Endpoint : PUT /api/contact/update/:id_contacts
 
 Headers :
 - Authorization : token
@@ -54,7 +55,7 @@ Request Body :
     "first_name" : "Bill",
     "last_name" : "Valentinov",
     "email" : "bill80@gmail.com",
-    "phone" : "123456789098"
+    "phone_number" : "123456789098"
 }
 ```
 
@@ -63,11 +64,11 @@ Response Body Success :
 ```json
 {
     "data" : {
-        "id" : 1,
+        "id_contact" : 1,
         "first_name" : "Bill",
         "last_name" : "Valentinov",
         "email" : "bill80@gmail.com",
-        "phone" : "123456789098"
+        "phone_number" : "123456789098"
     }
 }
 ```
@@ -82,7 +83,7 @@ Response Body Error :
 
 ## 3. Get Contact API
 
-Endpoint : GET /api/contacts/:idContacts
+Endpoint : GET /api/contact/get/:id_contact
 
 Headers :
 - Authorization : token
@@ -92,11 +93,11 @@ Response Body Success :
 ```json
 {
     "data" : {
-        "id" : 1,
+        "id_contact" : 1,
         "first_name" : "Bill",
         "last_name" : "Valentinov",
         "email" : "bill80@gmail.com",
-        "phone" : "123456789098"
+        "phone_number" : "123456789098"
     }
 }
 ```
@@ -111,7 +112,7 @@ Response Body Error :
 
 ## 4. Search Contact API
 
-Endpoint : GET /api/contacts/search
+Endpoint : GET /api/contact/search
 
 Headers :
 - Authorization : token
@@ -119,7 +120,7 @@ Headers :
 Query params :
 - name : Search by first_name or last_name using like, optional
 - email : Search by email using like, optional
-- phone : Search by phone using like, optional
+- phone_number : Search by phone_number using like, optional
 - page : number of page, default 1
 - size : size per page, default 10
 
@@ -129,18 +130,18 @@ Response Body Success :
 {
     "data" : [
         {
-        "id" : 1,
+        "id_contact" : 1,
         "first_name" : "Bill",
         "last_name" : "Valentinov",
         "email" : "bill80@gmail.com",
-        "phone" : "123456789098"
+        "phone_number" : "123456789098"
         },
         {
-        "id" : 2,
+        "id_contact" : 2,
         "first_name" : "Eko",
         "last_name" : "Khannedy",
         "email" : "eko@pzn.com",
-        "phone" : "098765432123"
+        "phone_number" : "098765432123"
         }
     ],
     "paging" : {
@@ -161,7 +162,7 @@ Response Body Error :
 
 ## 5. Remove Contact API
 
-Endpoint : DELETE /api/contacts/:idContacts
+Endpoint : DELETE /api/contact/remove/:id_contacts
 
 Headers :
 - Authorization : token

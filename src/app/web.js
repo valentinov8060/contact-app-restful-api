@@ -11,7 +11,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/user', publicRouter)
-app.use('/api/user', privateRouter)
+app.use('/api', privateRouter)
 
 app.use(errorMiddleware)
 

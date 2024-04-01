@@ -2,7 +2,7 @@
 
 ## 1. Create Address API
 
-Endpoint : POST /api/contacts/:contactId/addresses
+Endpoint : POST /api/contact/:id_contact/address/create
 
 Headers :
 - Authorization : token
@@ -24,7 +24,7 @@ Response Body Success :
 ```json
 {
   "data" : {
-    "id" : 1,
+    "id_address" : 1,
     "street" : "Jalan apa",
     "city" : "Kota apa",
     "province" : "Provinsi apa",
@@ -44,7 +44,7 @@ Response Body Error :
 
 ## 2. Update Address API
 
-Endpoint : PUT /api/contacts/:contactId/addresses/:addressId
+Endpoint : PUT /api/contact/:id_contact/address/update/:id_address
 
 Headers :
 - Authorization : token
@@ -66,7 +66,7 @@ Response Body Success :
 ```json
 {
   "data" : {
-    "id" : 1,
+    "id_address" : 1,
     "street" : "Jalan apa",
     "city" : "Kota apa",
     "province" : "Provinsi apa",
@@ -86,7 +86,7 @@ Response Body Error :
 
 ## 3. Get Address API
 
-Endpoint : GET /api/contacts/:contactId/addresses/:addressId
+Endpoint : GET /api/contact/:id_contact/address/get/:id_address
 
 Headers :
 - Authorization : token
@@ -96,7 +96,7 @@ Response Body Success :
 ```json
 {
   "data" : {
-    "id" : 1,
+    "id_address" : 1,
     "street" : "Jalan apa",
     "city" : "Kota apa",
     "province" : "Provinsi apa",
@@ -114,9 +114,9 @@ Response Body Error :
 }
 ```
 
-## 4. List Addresses API
+## 4. List Address API
 
-Endpoint : GET /api/contacts/:contactId/addresses/list
+Endpoint : GET /api/contact/:id_contact/address/list
 
 Headers :
 - Authorization : token
@@ -127,7 +127,7 @@ Response Body Success :
 {
   "data" : [
     {
-      "id" : 1,
+      "id_address" : 1,
       "street" : "Jalan apa",
       "city" : "Kota apa",
       "province" : "Provinsi apa",
@@ -135,7 +135,7 @@ Response Body Success :
       "postal_code" : "Kode pos"
     },
     {
-      "id" : 1,
+      "id_address" : 1,
       "street" : "Jalan apa",
       "city" : "Kota apa",
       "province" : "Provinsi apa",
@@ -156,7 +156,7 @@ Response Body Error :
 
 ## 5. Remove Address API
 
-Endpoint : DELETE /api/contacts/:contactId/addresses/:addressId
+Endpoint : DELETE /api/contacts/:id_contact/address/remove/:id_address
 
 Headers :
 - Authorization : token

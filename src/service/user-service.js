@@ -72,12 +72,12 @@ const userLogin = async (reqBody) => {
     })
 }
 
-const userGet = async (idFromHeader) => {
-    idFromHeader = validation(idUserValidationSchema, idFromHeader)
+const userGet = async (idUserFromHeader) => {
+    idUserFromHeader = validation(idUserValidationSchema, idUserFromHeader)
 
     const getUsernameAndNameById = await prismaClient.user.findFirst({
         where: {
-            id_user: idFromHeader
+            id_user: idUserFromHeader
         },
         select: {
             id_user: true,
@@ -93,13 +93,13 @@ const userGet = async (idFromHeader) => {
     return getUsernameAndNameById
 }
 
-const userUpdate = async (idFromHeader, reqBody) => {
-    idFromHeader = validation(idUserValidationSchema, idFromHeader)
+const userUpdate = async (idUserFromHeader, reqBody) => {
+    idUserFromHeader = validation(idUserValidationSchema, idUserFromHeader)
     reqBody = validation(updateUserValidationSchema, reqBody)
 
     const checkUser = await prismaClient.user.findFirst({
         where: {
-            id_user: idFromHeader
+            id_user: idUserFromHeader
         }
     })
 
@@ -118,7 +118,7 @@ const userUpdate = async (idFromHeader, reqBody) => {
 
     return prismaClient.user.update({
         where: {
-            id_user: idFromHeader
+            id_user: idUserFromHeader
         },
         data,
         select: {
@@ -129,12 +129,12 @@ const userUpdate = async (idFromHeader, reqBody) => {
     })
 }
 
-const userLogout = async (idFromHeader) => {
-    validation(idUserValidationSchema, idFromHeader)
+const userLogout = async (idUserFromHeader) => {
+    validation(idUserValidationSchema, idUserFromHeader)
 
     return prismaClient.user.update({
         where: {
-            id_user: idFromHeader
+            id_user: idUserFromHeader
         },
         data: {
             token: null

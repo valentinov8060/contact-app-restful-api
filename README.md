@@ -26,6 +26,10 @@ npm start
 
 This will start the server on the specified port (usually port 3000). You can access the API using the address `http://localhost:3000`.
 
+### Connect Database
+
+Don't forget to connect your database using Prisma.
+
 ### YouTube Channel
 
 This project follows the tutorial series available on our YouTube channel. You can find more tutorials and guides related to this project on our YouTube channel [here](https://www.youtube.com/watch?v=6v8JXecArqE).
